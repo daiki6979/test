@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Security.Cryptography;
@@ -7,38 +7,44 @@ using UnityEngine;
 
 public class Vegetable : MonoBehaviour
 {
-    public int point;//ƒ|ƒCƒ“ƒg
-    public float baseY;//ƒXƒ|[ƒ“Y²
+    public int point;//ãƒã‚¤ãƒ³ãƒˆ
+    public float baseY;//ã‚¹ãƒãƒ¼ãƒ³Yè»¸
 
-    //ˆø‚Á‚±”²‚«‚Ìˆ—
+    //å¼•ã£ã“æŠœãã®å‡¦ç†
     public IEnumerator PullOut()
     {
-        Vector3 start = transform.position;//Œ»İˆÊ’u‚ğ•Û‘¶
+        Vector3 start = transform.position;//ç¾åœ¨ä½ç½®ã‚’ä¿å­˜
 
-        Vector3 up = start + Vector3.up * 1.5f;//ˆø‚Á‚±”²‚«iã‚ÉˆÚ“®j
+        Vector3 up = start + Vector3.up * 1.5f;//å¼•ã£ã“æŠœãï¼ˆä¸Šã«ç§»å‹•ï¼‰
 
         float t = 0;
 
-        //ˆø‚Á‚±”²‚­
+        //å¼•ã£ã“æŠœã
         while (t < 1)
         {
-            t += Time.deltaTime;//ƒXƒs[ƒh
+            t += Time.deltaTime;//ã‚¹ãƒ”ãƒ¼ãƒ‰
             transform.position = Vector3.Lerp(start, up, t);
             yield return null;
         }
 
-        Vector3 right = up + Vector3.right * 10f;//‰æ–ÊŠO‚Ö”ò‚Î‚·i‰E‚ÉˆÚ“®j
+        Vector3 right = up + Vector3.right * 10f;//ç”»é¢å¤–ã¸é£›ã°ã™ï¼ˆå³ã«ç§»å‹•ï¼‰
 
         t = 0;
 
-        //‰æ–ÊŠO‚Ö”ò‚Î‚·
+        //ç”»é¢å¤–ã¸é£›ã°ã™
         while (t < 1)
         {
-            t += Time.deltaTime * 2f;//ƒXƒs[ƒh
+            t += Time.deltaTime * 2f;//ã‚¹ãƒ”ãƒ¼ãƒ‰
             transform.position = Vector3.Lerp(up, right, t);
             yield return null;
         }
 
         Destroy(gameObject);
+    }
+
+    public IEnumerator RaiseCd()
+    {
+        Vector3 start = transform.position;//ç¾åœ¨ä½ç½®ã‚’ä¿å­˜
+        yield return null;
     }
 }
