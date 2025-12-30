@@ -1,19 +1,21 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FieldManager : MonoBehaviour
 {
-    //6~4ƒ}ƒX
+    //6Ã—4ãƒã‚¹
     public int width = 6;
     public int height = 4;
 
-    //g‚¤–ìØ‚½‚¿
+    //ä½¿ã†é‡èœãŸã¡
     public GameObject daikonPrefab;
     public GameObject ninjinPrefab;
+    //é¸æŠã‚«ãƒ¼ã‚½ãƒ«
+    public GameObject SelectCursol;
 
-    GameObject[,] field;//”¨‚Ìó‘Ô‚Ì•Û
+    GameObject[,] field;//ç•‘ã®çŠ¶æ…‹ã®ä¿æŒ
 
     int x = 0, z = 0;
 
@@ -22,7 +24,7 @@ public class FieldManager : MonoBehaviour
     {
         field = new GameObject[width, height];
 
-        //Å‰‚Í‚·‚×‚Ä‘åª‚É‚·‚é
+        //æœ€åˆã¯ã™ã¹ã¦å¤§æ ¹ã«ã™ã‚‹
         for (int x = 0; x < width; x++)
         {
             for (int z = 0; z < height; z++)
@@ -35,57 +37,60 @@ public class FieldManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (TimerManager.isGameOver) return;//ƒQ[ƒ€I—¹Œã‚Íó‚¯•t‚¯‚È‚¢
+        if (TimerManager.isGameOver) return;//ã‚²ãƒ¼ãƒ çµ‚äº†å¾Œã¯å—ã‘ä»˜ã‘ãªã„
 
-        // WASDˆÚ“®
+        // WASDç§»å‹•
         if (Input.GetKeyDown(KeyCode.A)) x = Mathf.Max(0, x - 1);
         if (Input.GetKeyDown(KeyCode.D)) x = Mathf.Min(width - 1, x + 1);
         if (Input.GetKeyDown(KeyCode.W)) z = Mathf.Min(height - 1, z + 1);
         if (Input.GetKeyDown(KeyCode.S)) z = Mathf.Max(0, z - 1);
 
-        // GƒL[‚Åˆø‚Á‚±”²‚­
+        //é¸æŠç¯„å›²ã‚’å››è§’ã§è¡¨ç¤º
+        Cursol(x, z);
+
+        // Gã‚­ãƒ¼ã§å¼•ã£ã“æŠœã
         if (Input.GetKeyDown(KeyCode.G))
         {
             if (field[x, z] != null)
             {
-                Vegetable v = field[x, z].GetComponent<Vegetable>();//VegetableƒXƒNƒŠƒvƒg‚ğæ“¾
+                Vegetable v = field[x, z].GetComponent<Vegetable>();//Vegetableã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’å–å¾—
                 
-                //ˆø‚Á‚±”²‚«‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ŠJniã‚ÉˆÚ“®‚³‚¹A‰æ–ÊŠO‚Ö”ò‚Î‚·j
+                //å¼•ã£ã“æŠœãã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹ï¼ˆä¸Šã«ç§»å‹•ã•ã›ã€ç”»é¢å¤–ã¸é£›ã°ã™ï¼‰
                 StartCoroutine(v.PullOut());
 
-                ScoreManager.Instance.AddScore(v.point);//ƒXƒRƒA‚ğ‰ÁZ
+                ScoreManager.Instance.AddScore(v.point);//ã‚¹ã‚³ã‚¢ã‚’åŠ ç®—
 
-                PopupManager.Instance.Show("+" + v.point + " Point");//‰æ–Ê‚Éƒ|ƒbƒvƒAƒbƒv•\¦
+                PopupManager.Instance.Show("+" + v.point + " Point");//ç”»é¢ã«ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—è¡¨ç¤º
 
-                field[x, z] = null;//”²‚¢‚½ŒÂŠ‚Ì–ìØ‚Ìî•ñ‚ğˆê“xÁ‹
+                field[x, z] = null;//æŠœã„ãŸå€‹æ‰€ã®é‡èœã®æƒ…å ±ã‚’ä¸€åº¦æ¶ˆå»
 
-                StartCoroutine(Respawn(x, z));//–ìØ‚ğƒXƒ|[ƒ“‚³‚¹‚é
+                StartCoroutine(Respawn(x, z));//é‡èœã‚’ã‚¹ãƒãƒ¼ãƒ³ã•ã›ã‚‹
             }
         }
     }
 
-    //‘åª‚ÌƒXƒ|[ƒ“i‰Šú‚ª‘åª‚Ì‚½‚ßì¬j
+    //å¤§æ ¹ã®ã‚¹ãƒãƒ¼ãƒ³ï¼ˆåˆæœŸãŒå¤§æ ¹ã®ãŸã‚ä½œæˆï¼‰
     void SpawnDaikon(int x, int z)
     {
-        Vector3 pos = new Vector3(x * 2, -1.8f, z * 2);//‘åª‚Ì”z’uiY²‚ÍŒÅ’èj
+        Vector3 pos = new Vector3(x * 2, -1.8f, z * 2);//å¤§æ ¹ã®é…ç½®ï¼ˆYè»¸ã¯å›ºå®šï¼‰
         GameObject obj = Instantiate(daikonPrefab, pos, Quaternion.identity);
         Vegetable v = obj.GetComponent<Vegetable>();
-        v.point = 1;//‘åª‚Ìƒ|ƒCƒ“ƒg”
+        v.point = 1;//å¤§æ ¹ã®ãƒã‚¤ãƒ³ãƒˆæ•°
         v.baseY = -1.8f;
         field[x, z] = obj;
     }
 
-    //ƒ‰ƒ“ƒ_ƒ€ƒXƒ|[ƒ“
+    //ãƒ©ãƒ³ãƒ€ãƒ ã‚¹ãƒãƒ¼ãƒ³
     void SpawnRandom(int x, int z)
     {
         bool ninjin = UnityEngine.Random.value > 0.5f;
 
         if (ninjin)
         {
-            Vector3 pos = new Vector3(x * 2, -3.8f, z * 2);//ƒjƒ“ƒWƒ“‚Ì”z’uiY²‚ÍŒÅ’èj
+            Vector3 pos = new Vector3(x * 2, -3.8f, z * 2);//ãƒ‹ãƒ³ã‚¸ãƒ³ã®é…ç½®ï¼ˆYè»¸ã¯å›ºå®šï¼‰
             GameObject obj = Instantiate(ninjinPrefab, pos, Quaternion.identity);
             Vegetable v = obj.GetComponent<Vegetable>();
-            v.point = 2;//ƒjƒ“ƒWƒ“‚Ìƒ|ƒCƒ“ƒg”
+            v.point = 2;//ãƒ‹ãƒ³ã‚¸ãƒ³ã®ãƒã‚¤ãƒ³ãƒˆæ•°
             v.baseY = -3.9f;
             field[x, z] = obj;
         }
@@ -94,10 +99,11 @@ public class FieldManager : MonoBehaviour
             SpawnDaikon(x, z);
         }
 
+ 
 
         /*
-        ‚à‚µ–ìØ‚ğ’Ç‰Á‚·‚é‚È‚ç‚ÌƒvƒƒOƒ‰ƒ€—á
-        // 0.0 ` 1.0 ‚Ì—”‚ğæ“¾
+        ã‚‚ã—é‡èœã‚’è¿½åŠ ã™ã‚‹ãªã‚‰ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ ä¾‹
+        // 0.0 ï½ 1.0 ã®ä¹±æ•°ã‚’å–å¾—
         float r = UnityEngine.Random.value;
 
         // 50% 
@@ -105,7 +111,7 @@ public class FieldManager : MonoBehaviour
         {
             SpawnDaikon(x, z);
         }
-        // Ÿ‚Ì30% 
+        // æ¬¡ã®30% 
         else if (r < 0.8f)
         {
             Vector3 pos = new Vector3(x * 2, -3.8f, z * 2);
@@ -117,7 +123,7 @@ public class FieldManager : MonoBehaviour
 
             field[x, z] = obj;
         }
-        // c‚è20% 
+        // æ®‹ã‚Š20% 
         else
         {
             Vector3 pos = new Vector3(x * 2, -2.5f, z * 2);
@@ -130,13 +136,19 @@ public class FieldManager : MonoBehaviour
             field[x, z] = obj;
         }*/
     }
+    //é¸æŠã‚«ãƒ¼ã‚½ãƒ«ã®è¡¨ç¤º
+    void Cursol(int x, int z)
+    {
+        Vector3 pos = new Vector3(x * 2,0.1f, z * 2);
 
-    //ƒŠƒXƒ|[ƒ“
+        SelectCursol.transform.position = pos;
+    }
+    //ãƒªã‚¹ãƒãƒ¼ãƒ³
     IEnumerator Respawn(int x, int z)
     {
-        float t = UnityEngine.Random.Range(1f, 5f);//‰½•bŒã‚ÉƒŠƒXƒ|[ƒ“‚·‚é‚©w’è
+        float t = UnityEngine.Random.Range(1f, 5f);//ä½•ç§’å¾Œã«ãƒªã‚¹ãƒãƒ¼ãƒ³ã™ã‚‹ã‹æŒ‡å®š
         yield return new WaitForSeconds(t);
-        SpawnRandom(x, z);//ƒ‰ƒ“ƒ_ƒ€‚ÅƒXƒ|[ƒ“‚³‚¹‚é
+        SpawnRandom(x, z);//ãƒ©ãƒ³ãƒ€ãƒ ã§ã‚¹ãƒãƒ¼ãƒ³ã•ã›ã‚‹
     }
 
 }
