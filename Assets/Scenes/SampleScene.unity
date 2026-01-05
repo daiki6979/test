@@ -848,6 +848,7 @@ GameObject:
   - component: {fileID: 1606291640}
   - component: {fileID: 1606291639}
   - component: {fileID: 1606291638}
+  - component: {fileID: 1606291642}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -927,6 +928,20 @@ MonoBehaviour:
   daikonPrefab: {fileID: 8058510201920887779, guid: 4b7a2405e2f89c34f812a3e2c229c5ab, type: 3}
   ninjinPrefab: {fileID: 2009770554214119902, guid: aaa9a50f2cef7b3429761a50e81ddce2, type: 3}
   cursor: {fileID: 1177004168}
+--- !u!114 &1606291642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606291636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 298487d356f2fd842a526a4a9a287a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  absAcc: 0
+  acc: {x: 0, y: 0, z: 0}
 --- !u!1 &1699197127
 GameObject:
   m_ObjectHideFlags: 0
