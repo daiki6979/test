@@ -11,7 +11,7 @@ public class Recelver : MonoBehaviour
     public float absAcc;
     public Vector3 acc;
 
-    public static Recelver Instance;//追加部分
+    public static Recelver Instance;
 
     // Start is called before the first frame update
     void Start()
