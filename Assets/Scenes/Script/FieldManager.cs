@@ -13,6 +13,11 @@ public class FieldManager : MonoBehaviour
     public GameObject daikonPrefab;
     public GameObject ninjinPrefab;
 
+    //カーソルフレーム
+    public GameObject cursor;
+    Cursor_Frame cursorFrame;
+   
+
     GameObject[,] field;//畑の状態の保持
 
     int x = 0, z = 0;
@@ -30,6 +35,11 @@ public class FieldManager : MonoBehaviour
                 SpawnDaikon(x, z);
             }
         }
+
+
+        //Cursor_Frame
+        cursorFrame = cursor.GetComponent<Cursor_Frame>();
+        UpdateCursor();
     }
 
     // Update is called once per frame
@@ -42,6 +52,9 @@ public class FieldManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D)) x = Mathf.Min(width - 1, x + 1);
         if (Input.GetKeyDown(KeyCode.W)) z = Mathf.Min(height - 1, z + 1);
         if (Input.GetKeyDown(KeyCode.S)) z = Mathf.Max(0, z - 1);
+
+        //カーソルフレーム更新
+        UpdateCursor();
 
         // Gキーで引っこ抜く
         if (Input.GetKeyDown(KeyCode.G))
@@ -137,6 +150,18 @@ public class FieldManager : MonoBehaviour
         float t = UnityEngine.Random.Range(1f, 5f);//何秒後にリスポーンするか指定
         yield return new WaitForSeconds(t);
         SpawnRandom(x, z);//ランダムでスポーンさせる
+    }
+
+    //カーソルフレーム処理
+    void UpdateCursor()
+    {
+        cursor.transform.position = new Vector3(x * 2, 0.05f, z * 2);
+
+        //このマスに野菜はあるか
+        bool canPull = field[x, z] != null;
+
+        cursorFrame.SetCanPull(canPull);
+
     }
 
 }
