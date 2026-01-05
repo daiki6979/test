@@ -11,12 +11,20 @@ public class Recelver : MonoBehaviour
     public float absAcc;
     public Vector3 acc;
 
+    public static Recelver Instance;//追加部分
+
     // Start is called before the first frame update
     void Start()
     {
         serial = new SerialPort("COM3", 115200); // ← COM番号注意
         serial.Open();
         serial.ReadTimeout = 50;
+    }
+
+    //追加部分
+    void Awake()
+    {
+        Instance = this;
     }
 
     // Update is called once per frame
