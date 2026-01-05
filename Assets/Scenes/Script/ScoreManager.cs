@@ -1,25 +1,30 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
-    public static ScoreManager Instance;//‘¼‚ÌƒXƒNƒŠƒvƒg‚©‚çPopupManager.Instance‚ÅƒAƒNƒZƒX
+    public static ScoreManager Instance;//ä»–ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‹ã‚‰PopupManager.Instanceã§ã‚¢ã‚¯ã‚»ã‚¹
     public Text scoreText;
 
-    int score = 0;//ŠJn‚ÌƒXƒRƒA
+    int score = 0;//é–‹å§‹æ™‚ã®ã‚¹ã‚³ã‚¢
+
+    public int Score
+    {
+        get { return score; }
+    }
 
     void Awake()
     {
         Instance = this;
-        scoreText.text = "Score : 0";//•\¦‚³‚ê‚éƒeƒLƒXƒg
+        scoreText.text = "Score : 0";//è¡¨ç¤ºã•ã‚Œã‚‹ãƒ†ã‚­ã‚¹ãƒˆ
     }
 
     public void AddScore(int value)
     {
         score += value;
-        scoreText.text = "Score : " + score;//‰æ–Ê•\¦‚ğXV
+        scoreText.text = "Score : " + score;//ç”»é¢è¡¨ç¤ºã‚’æ›´æ–°
     }
 
 }

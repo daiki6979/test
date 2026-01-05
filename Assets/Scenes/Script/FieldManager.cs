@@ -12,6 +12,7 @@ public class FieldManager : MonoBehaviour
     //使う野菜たち
     public GameObject daikonPrefab;
     public GameObject ninjinPrefab;
+    public GameObject kakashiPrefab;
     //選択カーソル
     public GameObject SelectCursol;
 
@@ -23,15 +24,17 @@ public class FieldManager : MonoBehaviour
     void Start()
     {
         field = new GameObject[width, height];
-
+        AddHeight();
         //最初はすべて大根にする
         for (int x = 0; x < width; x++)
         {
-            for (int z = 0; z < height; z++)
+            for (int z = 1; z < height; z++)
             {
                 SpawnDaikon(x, z);
             }
         }
+        
+        kakashiSpawn();
     }
 
     // Update is called once per frame
@@ -53,18 +56,28 @@ public class FieldManager : MonoBehaviour
         {
             if (field[x, z] != null)
             {
+                // かかしか？
+                kakashi kakashi = field[x, z].GetComponent<kakashi>();
+                if (kakashi != null)
+                {
+                    StartCoroutine(kakashi.Activate());
+                    return;
+                }
+
                 Vegetable v = field[x, z].GetComponent<Vegetable>();//Vegetableスクリプトを取得
-                
-                //引っこ抜きのアニメーション開始（上に移動させ、画面外へ飛ばす）
-                StartCoroutine(v.PullOut());
+                if (v != null)
+                {
+                    //引っこ抜きのアニメーション開始（上に移動させ、画面外へ飛ばす）
+                    StartCoroutine(v.PullOut());
 
-                ScoreManager.Instance.AddScore(v.point);//スコアを加算
+                    ScoreManager.Instance.AddScore(v.point);//スコアを加算
 
-                PopupManager.Instance.Show("+" + v.point + " Point");//画面にポップアップ表示
+                    PopupManager.Instance.Show("+" + v.point + " Point");//画面にポップアップ表示
 
-                field[x, z] = null;//抜いた個所の野菜の情報を一度消去
+                    field[x, z] = null;//抜いた個所の野菜の情報を一度消去
 
-                StartCoroutine(Respawn(x, z));//野菜をスポーンさせる
+                    StartCoroutine(Respawn(x, z));//野菜をスポーンさせる
+                }
             }
         }
     }
@@ -149,6 +162,34 @@ public class FieldManager : MonoBehaviour
         float t = UnityEngine.Random.Range(1f, 5f);//何秒後にリスポーンするか指定
         yield return new WaitForSeconds(t);
         SpawnRandom(x, z);//ランダムでスポーンさせる
+    }
+
+    //畑の拡張(縦)
+    void AddHeight()
+    {
+        int newHeight = height + 1;
+        GameObject[,] newField = new GameObject[width, newHeight];
+
+        // 既存データをコピー
+        for (int x = 0; x < width; x++)
+        {
+            for (int z = 0; z < height; z++)
+            {
+                newField[x, z] = field[x, z];
+            }
+        }
+
+        field = newField;
+        height = newHeight;
+    }
+    //かかしのスポーン
+    void kakashiSpawn()
+    {
+        Vector3 pos = new Vector3(x * 2, 0f, z * 2);
+        GameObject obj = Instantiate(kakashiPrefab, pos, Quaternion.identity);
+        kakashi kakashi = obj.GetComponent<kakashi>();
+        kakashi.point = 5;
+        field[0, 0] = obj;
     }
 
 }

@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,24 +6,34 @@ using UnityEngine.UI;
 public class TimerManager : MonoBehaviour
 {
 
-    public float timeLimit = 180f;//ƒQ[ƒ€‚Ì§ŒÀŠÔİ’èi•b’PˆÊj
+    public float timeLimit = 180f;//ã‚²ãƒ¼ãƒ ã®åˆ¶é™æ™‚é–“è¨­å®šï¼ˆç§’å˜ä½ï¼‰
     public Text timerText;
 
-    public static bool isGameOver = false;//ƒQ[ƒ€I—¹‚Ìƒtƒ‰ƒO
+    public static bool isGameOver = false;//ã‚²ãƒ¼ãƒ çµ‚äº†ã®ãƒ•ãƒ©ã‚°
 
-
+    bool isCalled = false;
     // Update is called once per frame
     void Update()
     {
-        if (isGameOver) return;//ƒQ[ƒ€‚ªI—¹‚µ‚Ä‚¢‚½‚çAˆÈ‰º‚Ìˆ—‚Ís‚í‚È‚¢
+        if (isGameOver) return;//ã‚²ãƒ¼ãƒ ãŒçµ‚äº†ã—ã¦ã„ãŸã‚‰ã€ä»¥ä¸‹ã®å‡¦ç†ã¯è¡Œã‚ãªã„
 
-        //ƒ^ƒCƒ}[ˆ—
+        //ã‚¿ã‚¤ãƒãƒ¼å‡¦ç†
         timeLimit -= Time.deltaTime;
         if (timeLimit <= 0)
         {
             timeLimit = 0;
             isGameOver = true;
+
+            if (!isCalled)
+            {
+                isCalled = true;
+                FindObjectOfType<GameOverManager>().Show(GameEndType.TimeUp);
+            }
         }
+
+        //ä»–ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼å‡¦ç†
+        /*FindObjectOfType<GameOverManager>().Show(GameEndType.GameOver);
+        */
 
         int min = Mathf.FloorToInt(timeLimit / 60);
         int sec = Mathf.FloorToInt(timeLimit % 60);
