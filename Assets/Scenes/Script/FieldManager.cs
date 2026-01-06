@@ -192,4 +192,14 @@ public class FieldManager : MonoBehaviour
         field[0, 0] = obj;
     }
 
+    //製作都合上ゲームオーバーになるおぶじぇくと
+    void GameoverSpawn()
+    {
+        Vector3 pos = new Vector3(x * 2, 0f, z * 2);
+        GameObject obj = Instantiate(kakashiPrefab, pos, Quaternion.identity);
+        GOobj GOobj = obj.GetComponent<GOobj>();
+        GOobj.point = 5;
+        field[5, 0] = obj;
+    }
+
 }

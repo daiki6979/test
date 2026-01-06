@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TimerManager : MonoBehaviour
 {
 
-    public float timeLimit = 10f;//ゲームの制限時間設定（秒単位）
+    public float timeLimit = 180f;//ゲームの制限時間設定（秒単位）
     public Text timerText;
 
     public static bool isGameOver = false;//ゲーム終了のフラグ
