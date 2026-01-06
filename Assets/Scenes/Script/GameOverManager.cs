@@ -41,6 +41,8 @@ public class GameOverManager : MonoBehaviour
     public void Retry()
     {
         Time.timeScale = 1f;
+        TimerManager.isGameOver = false;
+        FindObjectOfType<TimerManager>()?.ResetTimer();
         StartCoroutine(FadeOutAndLoad(
             SceneManager.GetActiveScene().name
         ));
@@ -51,7 +53,9 @@ public class GameOverManager : MonoBehaviour
     public void BackToTitle()
     {
         Time.timeScale = 1f;
-        StartCoroutine(FadeOutAndLoad("野菜引っこ抜き"));
+        TimerManager.isGameOver = false;
+        FindObjectOfType<TimerManager>()?.ResetTimer();
+        StartCoroutine(FadeOutAndLoad("TItleScene"));
     }
 
 
@@ -69,7 +73,7 @@ public class GameOverManager : MonoBehaviour
 
         fadeCanvasGroup.alpha = 1f;
         Time.timeScale = 1f;
-        SceneManager.LoadScene("TItleScene");
+        SceneManager.LoadScene(sceneName);
     }
 
 

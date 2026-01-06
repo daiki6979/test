@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TimerManager : MonoBehaviour
 {
 
-    public float timeLimit = 180f;//ゲームの制限時間設定（秒単位）
+    public float timeLimit = 10f;//ゲームの制限時間設定（秒単位）
     public Text timerText;
 
     public static bool isGameOver = false;//ゲーム終了のフラグ
@@ -39,4 +39,18 @@ public class TimerManager : MonoBehaviour
         int sec = Mathf.FloorToInt(timeLimit % 60);
         timerText.text = $"{min:00}:{sec:00}";
     }
+
+    void Awake()
+    {
+        isGameOver = false;
+        timeLimit = 180f;
+    }
+
+    public void ResetTimer()
+    {
+        timeLimit = 180f;
+        isGameOver = false;
+    }
+
+
 }
