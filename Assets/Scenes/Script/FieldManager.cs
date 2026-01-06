@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Channels;
 using UnityEngine;
 
 public class FieldManager : MonoBehaviour
@@ -15,6 +16,15 @@ public class FieldManager : MonoBehaviour
     public GameObject kakashiPrefab;
     //選択カーソル
     public GameObject SelectCursol;
+
+    //加速度センサZ軸の閾値(変化量)
+    public float pullThresholdZ = -0.5f;
+
+    float baseZ;//初期のZの値（基準値）
+    bool isBaseSet = false;
+
+    //連続で振りすぎてエラーが起こるのを防ぐ
+    bool canPullByAcc = true;
 
     GameObject[,] field;//畑の状態の保持
 
@@ -51,6 +61,8 @@ public class FieldManager : MonoBehaviour
         //選択範囲を四角で表示
         Cursol(x, z);
 
+        CheckPullByZValue();
+
         // Gキーで引っこ抜く
         if (Input.GetKeyDown(KeyCode.G))
         {
@@ -79,6 +91,58 @@ public class FieldManager : MonoBehaviour
                     StartCoroutine(Respawn(x, z));//野菜をスポーンさせる
                 }
             }
+        }
+    }
+
+    void CheckPullByZValue()
+    {
+        if(Recelver.Instance==null) return;
+
+        float zAcc = Recelver.Instance.acc.z;
+
+        //初期のZの値を取得（基準値）
+        if (!isBaseSet)
+        {
+            baseZ = zAcc;
+            isBaseSet = true;
+            return;
+        }
+
+        float deltaZ = zAcc - baseZ;
+
+        //閾値を超えたら
+        if ((deltaZ < pullThresholdZ) && canPullByAcc)
+        {
+            PullCurrent();
+            canPullByAcc = false;
+        }
+
+        //加速度の閾値が戻る
+        if(zAcc > 1.0f)
+        {
+            canPullByAcc=true;
+        }
+
+    }
+
+    //引っこ抜き処理
+    void PullCurrent()
+    {
+        Debug.Log("Pulled!");
+        if (field[x, z] != null)
+        {
+            Vegetable v = field[x, z].GetComponent<Vegetable>();//Vegetableスクリプトを取得
+
+            //引っこ抜きのアニメーション開始（上に移動させ、画面外へ飛ばす）
+            StartCoroutine(v.PullOut());
+
+            ScoreManager.Instance.AddScore(v.point);//スコアを加算
+
+            PopupManager.Instance.Show("+" + v.point + " Point");//画面にポップアップ表示
+
+            field[x, z] = null;//抜いた個所の野菜の情報を一度消去
+
+            StartCoroutine(Respawn(x, z));//野菜をスポーンさせる
         }
     }
 
