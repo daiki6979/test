@@ -18,8 +18,11 @@ public class FieldManager : MonoBehaviour
     public GameObject cursor;
     Cursor_Frame cursorFrame;
 
-    //加速度センサZ軸の閾値
-    public float pullThresholdZ = 1.0f;
+    //加速度センサZ軸の閾値(変化量)
+    public float pullThresholdZ = 1.5f;
+
+    float baseZ;//初期のZの値（基準値）
+    bool isBaseSet = false;
 
     //連続で振りすぎてエラーが起こるのを防ぐ
     bool canPullByAcc = true;
@@ -73,15 +76,26 @@ public class FieldManager : MonoBehaviour
 
         float zAcc = Recelver.Instance.acc.z;
 
+        //初期のZの値を取得（基準値）
+        if (!isBaseSet)
+        {
+            baseZ = zAcc;
+            isBaseSet = true;
+            return;
+        }
+
+        float deltaZ = zAcc - baseZ;
+
+
         //閾値を超えたら
-        if (zAcc > pullThresholdZ && canPullByAcc)
+        if (deltaZ > pullThresholdZ && canPullByAcc)
         {
             PullCurrent();
             canPullByAcc = false;
         }
 
         //加速度の閾値が戻る
-        if(zAcc < pullThresholdZ * 0.5f)
+        if(zAcc < 0f)
         {
             canPullByAcc=true;
         }

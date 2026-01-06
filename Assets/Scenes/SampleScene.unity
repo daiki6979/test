@@ -928,6 +928,7 @@ MonoBehaviour:
   daikonPrefab: {fileID: 8058510201920887779, guid: 4b7a2405e2f89c34f812a3e2c229c5ab, type: 3}
   ninjinPrefab: {fileID: 2009770554214119902, guid: aaa9a50f2cef7b3429761a50e81ddce2, type: 3}
   cursor: {fileID: 1177004168}
+  pullThresholdZ: 1
 --- !u!114 &1606291642
 MonoBehaviour:
   m_ObjectHideFlags: 0
