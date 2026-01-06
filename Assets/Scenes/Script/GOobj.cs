@@ -75,10 +75,11 @@ public class GOobj : MonoBehaviour
 
         transform.position = basePos;
         cdLight.intensity = 0;
-
+        
 
         //フラグを下げる
         isCdActive = false;
+
 
         /*フラグの使い方
          * void Update()

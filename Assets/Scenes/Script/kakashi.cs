@@ -11,7 +11,7 @@ public class kakashi : MonoBehaviour
 
     public float rotateSpeed = 360f;
 
-    public float glowIntensity = 2f;   // 発光量
+    public float glowIntensity = 20f;   // 発光量
     public float glowTime = 1.2f;
 
     public float returnTime = 1.5f;    //戻る時間
