@@ -13,6 +13,7 @@ public class FieldManager : MonoBehaviour
     public GameObject daikonPrefab;
     public GameObject ninjinPrefab;
     public GameObject kakashiPrefab;
+    public GameObject GOobjPrefab;
     //選択カーソル
     public GameObject SelectCursol;
 
@@ -35,6 +36,7 @@ public class FieldManager : MonoBehaviour
         }
         
         kakashiSpawn();
+        GameoverSpawn();
     }
 
     // Update is called once per frame
@@ -61,6 +63,15 @@ public class FieldManager : MonoBehaviour
                 if (kakashi != null)
                 {
                     StartCoroutine(kakashi.Activate());
+                    return;
+                }
+
+                //ゲームオーバーに挿せるオブジェクト化？
+                GOobj GOobj = field[x, z].GetComponent<GOobj>();
+                if (GOobj != null)
+                {
+                    StartCoroutine(GOobj.Activate());
+                    FindObjectOfType<GameOverManager>().Show(GameEndType.GameOver);
                     return;
                 }
 
@@ -195,11 +206,20 @@ public class FieldManager : MonoBehaviour
     //製作都合上ゲームオーバーになるおぶじぇくと
     void GameoverSpawn()
     {
-        Vector3 pos = new Vector3(x * 2, 0f, z * 2);
-        GameObject obj = Instantiate(kakashiPrefab, pos, Quaternion.identity);
-        GOobj GOobj = obj.GetComponent<GOobj>();
-        GOobj.point = 5;
-        field[5, 0] = obj;
+        int gx = 2;
+        int gz = 0;
+
+        Vector3 pos = new Vector3(gx * 2, 0f, gz * 2);
+
+        GameObject obj = Instantiate(GOobjPrefab, pos, Quaternion.identity);
+
+        GOobj go = obj.GetComponent<GOobj>();
+        if (go != null)
+        {
+            go.point = 5;
+        }
+
+        field[gx, gz] = obj;
     }
 
 }
