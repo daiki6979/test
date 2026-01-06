@@ -1370,6 +1370,7 @@ MonoBehaviour:
   daikonPrefab: {fileID: 8058510201920887779, guid: 4b7a2405e2f89c34f812a3e2c229c5ab, type: 3}
   ninjinPrefab: {fileID: 2009770554214119902, guid: aaa9a50f2cef7b3429761a50e81ddce2, type: 3}
   kakashiPrefab: {fileID: 2488192025336477590, guid: 7918fcbe97076ae41b008cfe85ddcd33, type: 3}
+  GOobjPrefab: {fileID: 7386099289653124828, guid: d856ff6957887bf43a4e423e50ddb9ae, type: 3}
   SelectCursol: {fileID: 1769470593}
 --- !u!1 &1699197127
 GameObject:
