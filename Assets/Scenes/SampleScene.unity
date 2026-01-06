@@ -1291,6 +1291,7 @@ GameObject:
   - component: {fileID: 1606291640}
   - component: {fileID: 1606291639}
   - component: {fileID: 1606291638}
+  - component: {fileID: 1606291642}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1371,6 +1372,20 @@ MonoBehaviour:
   ninjinPrefab: {fileID: 2009770554214119902, guid: aaa9a50f2cef7b3429761a50e81ddce2, type: 3}
   kakashiPrefab: {fileID: 2488192025336477590, guid: 7918fcbe97076ae41b008cfe85ddcd33, type: 3}
   SelectCursol: {fileID: 1769470593}
+  pullThresholdZ: -0.5
+--- !u!114 &1606291642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606291636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 407bbe5fd49b4da4aa7caecfc0a89fbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeLimit: 0
 --- !u!1 &1699197127
 GameObject:
   m_ObjectHideFlags: 0
